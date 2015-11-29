@@ -209,49 +209,7 @@ angular.module('openlabs.angular-tryton', ['ngStorage'])
   // result object
   var trytonResponseTransformer = function(response, headerGetter) {
     if (response.hasOwnProperty('result')) {
-      angular.forEach(response.result, function(record, recordKey) {
-        angular.forEach(record, function(field, fieldKey) {
-          if(field && field.hasOwnProperty('__class__')) {
-            switch(field['__class__']) {
-              case 'Decimal':
-                response.result[recordKey][fieldKey] = field.decimal;
-                break;
-              case 'datetime':
-                response.result[recordKey][fieldKey] = new Date(field.year, field.month - 1, field.day,
-                                                                field.hour, field.minute,
-                                                                field.second, field.microsecond/1000
-                                                               ).toUTCString();
-                break;
-              case 'date':
-                // Get dateFormat from user preferences otherwise show in ISO format.
-                var dateFormat = sessionProvider.context && sessionProvider.context.locale.date || '%Y/%m/%d';
-                var replaceMap = {
-                  '%Y': field.year,
-                  '%d': field.day,
-                  '%m': field.month
-                };
-                response.result[recordKey][fieldKey] = dateFormat.replace(/%Y|%m|%d/g, function(matched) {
-                  return replaceMap[matched];
-                });
-                break;
-              case 'time':
-                var date = new Date(null, null, null,
-                                    field.hour, field.minute,
-                                    field.second, field.microsecond/1000
-                                   ).toUTCString();
-                response.result[recordKey][fieldKey] = date.getUTCHours() +
-                                                      ':' + date.getUTCMinutes() +
-                                                      ':' + date.getUTCSeconds() +
-                                                      ':' + date.getUTCMilliseconds();
-                break;
-              case 'buffer':
-                response.result[recordKey][fieldKey] = field.base64;
-                break;
-            }
-          }
-        });
-      });
-      return response.result;
+      return Fulfil.transformResponse(response.result);
     } else if (response.hasOwnProperty('error')) {
       var error = response.error;
       error['__error__'] = true;
