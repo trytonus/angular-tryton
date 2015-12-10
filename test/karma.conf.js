@@ -10,16 +10,25 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jasmine'],
+    frameworks: ['jasmine', 'closure'],
 
 
     // list of files / patterns to load in the browser
     files: [
+      'bower_components/google-closure-library/closure/goog/base.js',
       'bower_components/angular/angular.js',
       'bower_components/angular-mocks/angular-mocks.js',
       'bower_components/ngstorage/ngStorage.min.js',
       'test/**/*.js',
-      'src/tryton.js'
+      'src/*.js',
+      {
+        pattern: 'bower_components/google-closure-library/closure/goog/deps.js',
+        included: false,
+        served: false
+      }, {
+        pattern: 'bower_components/google-closure-library/closure/goog/**/*.js',
+        included: false
+      }
     ],
 
 
@@ -32,7 +41,10 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'src/tryton.js': ['coverage']
+      'test/**/*.js': ['closure', 'closure-iit'],
+      'src/*.js': ['closure', 'coverage'],
+      'bower_components/google-closure-library/closure/goog/**/*.js': ['closure'],
+      'bower_components/google-closure-library/closure/goog/deps.js': ['closure-deps']
     },
 
 
@@ -46,7 +58,7 @@ module.exports = function(config) {
       reporters:[
         {type: 'html', dir:'coverage/'},
         {type: 'text-summary'}
-      ],
+      ]
     },
 
     // web server port
