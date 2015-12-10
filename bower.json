@@ -1,15 +1,16 @@
 {
-  "name": "angular-tryton",
+  "name": "fio-angular-tryton",
   "version": "0.4.0",
   "authors": [
-    "Sharoon Thomas <sharoon.thomas@openlabs.co.in>",
-    "Tarun Bhardwaj <tarun.bhardwaj@openlabs.co.in>",
+    "Sharoon Thomas <sharoon.thomas@fulfil.io>",
+    "Tarun Bhardwaj <tarun.bhardwaj@fulfil.io>",
     "Gaurav Butola <gaurav.butola@openlabs.co.in>"
   ],
-  "description": "AngularJS Tryton RPC Client Service",
-  "main": "./src/tryton.min.js",
+  "description": "Google closure based AngularJS Tryton RPC Client Service",
+  "main": "./src/",
   "keywords": [
     "angular",
+    "Fulfil",
     "Tryton"
   ],
   "license": "MIT",

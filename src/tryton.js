@@ -10,7 +10,7 @@ goog.scope(function() {
 
   /**
    * @ngdoc overview
-   * @name openlabs.angular-tryton
+   * @name fulfil.angular-tryton
    * @description
    * An [AngularJS](https://github.com/angular/angular.js) module that makes
    * tryton JSONRPC working in the *Angular Way*. Contains two services `tryton`,
@@ -26,11 +26,11 @@ goog.scope(function() {
    * Usage
    * =====
    *
-   * ### Require `openlabs.angular-tryton` and Inject the Services
+   * ### Require `fulfil.angular-tryton` and Inject the Services
    *
    * ```js
    * angular.module('app', [
-   *     'openlabs.angular-tryton'
+   *     'fulfil.angular-tryton'
    * ]).controller('Ctrl', function(
    *   $scope,
    *   tryton,
@@ -56,7 +56,7 @@ goog.scope(function() {
 
   var angularTryton = angular.tryton;
 
-  angularTryton.module = angular.module('openlabs.angular-tryton', ['ngStorage'])
+  angularTryton.module = angular.module('fulfil.angular-tryton', ['ngStorage'])
   .config(['$httpProvider', 'sessionProvider', function($httpProvider, sessionProvider) {
     // Intercept all responses and check if the response received has an error
     // property which tryton uses to send errors the server handled.
@@ -70,7 +70,7 @@ goog.scope(function() {
             /**
              * @ngdoc event
              * @name tryton:NotLogged
-             * @eventOf openlabs.angular-tryton.service:tryton
+             * @eventOf fulfil.angular-tryton.service:tryton
              * @eventType broadcast on root scope
              *
              * @description
@@ -96,7 +96,7 @@ goog.scope(function() {
             /**
              * @ngdoc event
              * @name tryton:UserError
-             * @eventOf openlabs.angular-tryton.service:tryton
+             * @eventOf fulfil.angular-tryton.service:tryton
              * @eventType broadcast on root scope
              *
              * @description
@@ -121,7 +121,7 @@ goog.scope(function() {
             /**
              * @ngdoc event
              * @name tryton:UserWarning
-             * @eventOf openlabs.angular-tryton.service:tryton
+             * @eventOf fulfil.angular-tryton.service:tryton
              * @eventType broadcast on root scope
              *
              * @description
@@ -147,7 +147,7 @@ goog.scope(function() {
             /**
              * @ngdoc event
              * @name tryton:ConcurrencyException
-             * @eventOf openlabs.angular-tryton.service:tryton
+             * @eventOf fulfil.angular-tryton.service:tryton
              * @eventType broadcast on root scope
              *
              * @description
@@ -175,7 +175,7 @@ goog.scope(function() {
             /**
              * @ngdoc event
              * @name tryton:Exception
-             * @eventOf openlabs.angular-tryton.service:tryton
+             * @eventOf fulfil.angular-tryton.service:tryton
              * @eventType broadcast on root scope
              *
              * @description
@@ -233,7 +233,7 @@ goog.scope(function() {
 
   /**
    * @ngdoc service
-   * @name openlabs.angular-tryton.service:tryton
+   * @name fulfil.angular-tryton.service:tryton
    *
    * @description
    * Low level service to invoke RPC on a tryton server.
@@ -253,7 +253,7 @@ goog.scope(function() {
     /**
       @ngdoc property
       @name serverUrl
-      @propertyOf openlabs.angular-tryton.service:tryton
+      @propertyOf fulfil.angular-tryton.service:tryton
 
       @description
         Stores the URL of the RPC server to which the connection has to be
@@ -268,7 +268,7 @@ goog.scope(function() {
     /**
       @ngdoc method
       @name rpc
-      @methodOf openlabs.angular-tryton.service:tryton
+      @methodOf fulfil.angular-tryton.service:tryton
 
       @description
         The lowest level RPC client which invokes the `method` with the
@@ -296,7 +296,7 @@ goog.scope(function() {
           </file>
           <file name="app.js">
             angular.module('example', [
-              'openlabs.angular-tryton'
+              'fulfil.angular-tryton'
             ])
             .controller('TrytonCtrl', [
               '$scope',
@@ -330,7 +330,7 @@ goog.scope(function() {
     /**
       @ngdoc method
       @name getServerVersion
-      @methodOf openlabs.angular-tryton.service:tryton
+      @methodOf fulfil.angular-tryton.service:tryton
 
       @description
         Convenience wrapper to fetch server version.
@@ -348,7 +348,7 @@ goog.scope(function() {
           </file>
           <file name="app.js">
              angular.module('example', [
-               'openlabs.angular-tryton'
+               'fulfil.angular-tryton'
              ])
              .controller('TrytonCtrl', [
                '$scope',
@@ -376,7 +376,7 @@ goog.scope(function() {
 
   /**
    * @ngdoc service
-   * @name openlabs.angular-tryton.service:session
+   * @name fulfil.angular-tryton.service:session
    *
    * @description
    * High level service to invoke `tryton` service.
@@ -398,7 +398,7 @@ goog.scope(function() {
     /**
       @ngdoc property
       @name userId
-      @propertyOf openlabs.angular-tryton.service:session
+      @propertyOf fulfil.angular-tryton.service:session
 
       @description
         The Integer ID of the currently logged in User
@@ -408,7 +408,7 @@ goog.scope(function() {
     /**
       @ngdoc property
       @name sessionId
-      @propertyOf openlabs.angular-tryton.service:session
+      @propertyOf fulfil.angular-tryton.service:session
 
       @description
         The Session ID of the current session (issued by tryton server)
@@ -418,7 +418,7 @@ goog.scope(function() {
     /**
       @ngdoc property
       @name database
-      @propertyOf openlabs.angular-tryton.service:session
+      @propertyOf fulfil.angular-tryton.service:session
 
       @description
         The database to which this session connects to
@@ -428,7 +428,7 @@ goog.scope(function() {
     /**
       @ngdoc property
       @name login
-      @propertyOf openlabs.angular-tryton.service:session
+      @propertyOf fulfil.angular-tryton.service:session
 
       @description
         The login/username used to connect to tryton. This has to be remembered
@@ -443,7 +443,7 @@ goog.scope(function() {
     /**
       @ngdoc method
       @name loadAllFromStorage
-      @methodOf openlabs.angular-tryton.service:session
+      @methodOf fulfil.angular-tryton.service:session
 
       @description
         Sets session properties from sessionStorage and localStorage.
@@ -480,7 +480,7 @@ goog.scope(function() {
     /**
       @ngdoc method
       @name setSession
-      @methodOf openlabs.angular-tryton.service:session
+      @methodOf fulfil.angular-tryton.service:session
 
       @description
         Set the user and session ID and also save them to localStorage for
@@ -512,7 +512,7 @@ goog.scope(function() {
     /**
       @ngdoc method
       @name rpc
-      @methodOf openlabs.angular-tryton.service:session
+      @methodOf fulfil.angular-tryton.service:session
 
       @description
         Make remote procedure call on the given `method` with the `params` and
@@ -572,7 +572,7 @@ goog.scope(function() {
     /**
       @ngdoc method
       @name doLogout
-      @methodOf openlabs.angular-tryton.service:session
+      @methodOf fulfil.angular-tryton.service:session
 
       @description
         Log the current user out and clear out the session.
@@ -613,7 +613,7 @@ goog.scope(function() {
     /**
       @ngdoc method
       @name doLogin
-      @methodOf openlabs.angular-tryton.service:session
+      @methodOf fulfil.angular-tryton.service:session
 
       @description
         Login to the given `database` using `username` and `password`.
@@ -702,7 +702,7 @@ goog.scope(function() {
     /**
       @ngdoc method
       @name isLoggedIn
-      @methodOf openlabs.angular-tryton.service:session
+      @methodOf fulfil.angular-tryton.service:session
 
       @description
         Check if the user is logged in.
@@ -721,7 +721,7 @@ goog.scope(function() {
 
     /**
       @ngdoc filter
-      @name openlabs.angular-tryton.service:urlTryton
+      @name fulfil.angular-tryton.service:urlTryton
 
       @description
         Create a tryton scheme URL which can be opened with the URL handlers of
