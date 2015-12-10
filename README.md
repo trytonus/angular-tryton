@@ -8,28 +8,21 @@ working in the *Angular Way*. Contains two services `tryton`, `session` and one
 filter `urlTryton`.
 
 
-Documentation
--------------
-
-Documentation is auto generated from the code using `grunt ngdocs`.
-Hosted version of the documentation can be seen at 
-[openlabs.github.io/angular-tryton](http://openlabs.github.io/angular-tryton/)
-
 Install
 -------
 
 ```bash
-bower install angular-tryton
+bower install fio-angular-tryton
 ```
 
 Usage
 -----
 
-### Require `openlabs.angular-tryton` and Inject the Services
+### Require `fulfil.angular-tryton` and Inject the Services
 
 ```javascript
 angular.module('app', [
-    'openlabs.angular-tryton'
+    'fulfil.angular-tryton'
 ]).controller('Ctrl', function(
     $scope,
     tryton,
@@ -45,7 +38,7 @@ If you're still convinced that angular-tryton needs to be modified in order to h
 your problem and you have an idea on how to do that, well here's how to turn that idea
 into a commit (or two) in easy steps:
 
-1. [Fork Angular Tryton](http://github.com/openlabs/angular-tryton) into your very 
+1. [Fork Angular Tryton](http://github.com/fulfilio/angular-tryton) into your very 
    own GitHub repository
 
 2. Install git pre-commit hook `cp .hooks/pre-commit.sh .git/hooks/pre-commit`
@@ -61,12 +54,12 @@ into a commit (or two) in easy steps:
 Authors and Contributors
 ------------------------
 
-This module was built at [Openlabs](http://www.openlabs.co.in). 
+This module was built at [Openlabs](http://www.fulfil.io). 
 
 
 Professional Support
 --------------------
 
-This module is professionally supported by [Openlabs](http://www.openlabs.co.in).
+This module is professionally supported by [Openlabs](http://www.fulfil.io).
 If you are looking for on-site teaching or consulting support, contact our
-[sales](mailto:sales@openlabs.co.in) and [support](mailto:support@openlabs.co.in) teams.
+[sales](mailto:sales@fulfil.io) and [support](mailto:support@fulfil.io) teams.
