@@ -9,7 +9,7 @@
 describe('angular-tryton', function() {
   
   // Mock the angular-tryton module
-  beforeEach(angular.mock.module('openlabs.angular-tryton'));
+  beforeEach(angular.mock.module('fulfil.angular-tryton'));
 
   // Test the core rpc functionality
   describe('core-rpc', function() {
