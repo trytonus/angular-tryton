@@ -1,12 +1,14 @@
 goog.provide('angular.tryton');
 
 goog.require('angular.tryton.fulfil');
+goog.require('angular.tryton.PYSON');
 
 
 goog.scope(function() {
   'use strict';
 
   var Fulfil = angular.tryton.fulfil;
+  var PYSON = angular.tryton.PYSON;
 
   /**
    * @ngdoc overview
@@ -769,6 +771,8 @@ goog.scope(function() {
       }
       return 'tryton' + values.join('/');
     };
-  });
+  })
+
+  .service('pyson', PYSON);
 
 });    // goog.scope
