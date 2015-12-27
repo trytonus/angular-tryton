@@ -31,7 +31,12 @@ goog.scope(function() {
     var __class__ = value['__class__'].toLowerCase();
 
     if (__class__ === 'decimal') {
-      return new Fulfil.datatype.Decimal(value.decimal);
+      var result = new Fulfil.datatype.Decimal(value.decimal);
+      if (isNaN(result) || value === '' || value === null) {
+          return null;
+      } else {
+          return result;
+      }
     }
 
     if (__class__ === 'datetime') {
