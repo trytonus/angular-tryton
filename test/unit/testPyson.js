@@ -18,12 +18,21 @@ ddescribe('angular-tryton pyson', function() {
   }));
 
   it('should Eval', function() {
-    pyson.evaluate({
+    var rv = pyson.evaluate({
       d: '',
       __class__: 'Eval',
-      v: 'attribute_set'}
-    );
-    expect(pyson.Eval).toHaveBeenCalled();
+      v: 'attribute_set'
+    }, {});
+    expect(rv).toEqual('');
+
+    var rv = pyson.evaluate({
+      d: '',
+      __class__: 'Eval',
+      v: 'attribute_set'
+    }, {
+      'attribute_set': 'something'
+    });
+    expect(rv).toEqual('something');
   });
 
 });

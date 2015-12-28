@@ -12,7 +12,6 @@ goog.scope(function() {
 
   var Fulfil = angular.tryton.fulfil;
   Fulfil.datatype = angular.tryton.fulfil.datatype;
-  var date = goog.date.Date;
   var dateTime = goog.date.DateTime;
   var utcDateTime = goog.date.UtcDateTime;
   var interval = goog.date.Interval;
@@ -142,7 +141,7 @@ goog.scope(function() {
   Fulfil.datatype.Decimal = Number;
 
   Fulfil.datatype.Date = function (year, month, day) {
-    var date = new date(year, month, day);
+    var date = new goog.date.Date(year, month, day);
     date.isDate = true;
     return date;
   };
