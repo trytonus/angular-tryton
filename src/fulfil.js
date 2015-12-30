@@ -46,7 +46,8 @@ goog.scope(function() {
         value.hour,
         value.minute,
         value.second,
-        value.microsecond && value.microsecond / 1000
+        value.microsecond && value.microsecond / 1000,
+        true
       );
     }
     if (__class__ === 'date') {
