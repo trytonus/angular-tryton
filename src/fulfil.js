@@ -88,6 +88,10 @@ goog.scope(function() {
       return null;
     }
 
+    if (!goog.isObject(response_obj)) {
+      return response_obj;
+    }
+
     var transformed_res = {};
 
     for (var key in response_obj) {
