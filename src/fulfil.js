@@ -23,7 +23,6 @@ goog.scope(function() {
     if (value === null) {
       return null;
     }
-    //console.log(key, value);
     if (value['__class__'] === undefined) {
       return value;
     }
@@ -71,12 +70,86 @@ goog.scope(function() {
     return value;
   };
 
-  Fulfil.replacer = function (k, v) {
-    /*
-     * Transform client data to server
-     */
-    // TODO: Handle conversion
-    return v;
+  Fulfil.transformRequest = function (value) {
+    if (!goog.isDefAndNotNull(value)) {
+      return value;
+    }
+    if (goog.isArray(value)) {
+      return value.map(function (item) {
+        return Fulfil.transformRequest(item);
+      });
+    }
+    if (value.isDate) {
+      return {
+        '__class__': 'date',
+        'year': value.getYear(),
+        'month': value.getMonth() + 1,
+        'day': value.getDate()
+      };
+    }
+    if (value.isDateTime) {
+      value = value.clone();
+      return {
+        '__class__': 'datetime',
+        'year': value.getUTCFullYear(),
+        'month': value.getUTCMonth() + 1,
+        'day': value.getUTCDate(),
+        'hour': value.getUTCHours(),
+        'minute': value.getUTCMinutes(),
+        'second': value.getUTCSeconds(),
+        'microsecond': value.getUTCMilliseconds() * 1000
+      };
+    }
+    if (value.isTime) {
+      return {
+        '__class__': 'time',
+        'hour': value.getHours(),
+        'minute': value.getMinutes(),
+        'second': value.getSeconds(),
+        'microsecond': value.getMilliseconds() * 1000
+      }
+    }
+    if (value.isTimeDelta) {
+      // XXX: getTotalSeconds()
+      // Gets the total number of seconds in the time interval.
+      // Assumes that months and years are empty.
+      return {
+        '__class__': 'timedelta',
+        'seconds': value.getTotalSeconds()
+      };
+    }
+    if (value instanceof Fulfil.datatype.Decimal) {
+      return {
+        '__class__': 'Decimal',
+        'decimal': value.toString()
+      };
+    }
+    if (value instanceof Uint8Array) {
+      var strings = [], chunksize = 0xffff;
+      // JavaScript Core has hard-coded argument limit of 65536
+      // String.fromCharCode can not be called with too many
+      // arguments
+      for (var j = 0; j * chunksize < value.length; j++) {
+        strings.push(String.fromCharCode.apply(
+          null, value.subarray(
+            j * chunksize, (j + 1) * chunksize)));
+      }
+      return {
+        '__class__': 'bytes',
+        'base64': btoa(strings.join(''))
+      };
+    }
+
+    if (goog.isObject(value)) {
+      var transformed_res = {};
+      for (var key in value) {
+        if (value.hasOwnProperty(key)) {
+          transformed_res[key] = Fulfil.transformRequest(value[key]);
+        }
+      }
+      return transformed_res;
+    }
+    return value;
   };
 
   Fulfil.transformResponse = function (response_obj) {
@@ -84,12 +157,14 @@ goog.scope(function() {
      * This method transforms response from tryton server and replace
      * Result to Fulfil Datatypes
      */
-    if (response_obj === null) {
-      return null;
-    }
-
     if (!goog.isObject(response_obj)) {
       return response_obj;
+    }
+
+    if (goog.isArray(response_obj)) {
+      return response_obj.map(function (item) {
+        return Fulfil.transformResponse(item);
+      });
     }
 
     var transformed_res = {};
@@ -102,12 +177,6 @@ goog.scope(function() {
         }
         transformed_res[key] = Fulfil.reviver(key, value);
       }
-    }
-    if (Object.prototype.toString.call(response_obj) == "[object Array]") {
-      // XXX: Response Obj is Array.
-      transformed_res = Object.keys(transformed_res).map(function (k) {
-        return transformed_res[k];
-      });
     }
     return transformed_res;
   };
@@ -143,8 +212,14 @@ goog.scope(function() {
     });
   }
 
+  /*
+   * Number field
+   */
   Fulfil.datatype.Decimal = Number;
 
+  /*
+   * Date field
+   */
   Fulfil.datatype.Date = function (year, month, day) {
     var date = new goog.date.Date(year, month, day);
     date.isDate = true;
@@ -164,6 +239,9 @@ goog.scope(function() {
   Fulfil.datatype.Date.max.setMilliseconds(0);
   Fulfil.datatype.Date.max.isDate = true;
 
+  /*
+   * Datetime field
+   */
   Fulfil.datatype.DateTime = function (year, month, day, hour, minute, second,
                                        millisecond, utc) {
     var datetime;
@@ -194,6 +272,9 @@ goog.scope(function() {
   Fulfil.datatype.DateTime.max = dateTime.fromTimestamp(100000000 * 86400000);
   Fulfil.datatype.DateTime.max.isDateTime = true;
 
+  /*
+   * Time field
+   */
   Fulfil.datatype.Time = function (hour, minute, second, millisecond) {
     var time = new dateTime();
     time.setHours(hour);
@@ -204,6 +285,9 @@ goog.scope(function() {
     return time;
   };
 
+  /*
+   * Time Delta
+   */
   Fulfil.datatype.TimeDelta = function (
       years, months, days, hours, minutes, seconds) {
     var timedelta = new interval(years, months, days, hours, minutes, seconds);

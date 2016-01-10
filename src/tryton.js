@@ -319,11 +319,14 @@ goog.scope(function() {
         </example>
     **/
     this.rpc = function(method, params, database) {
+      // XXX: This can not be done angular http.transformRequest
+      // as that method is called after serializing request data.
+      var _params = Fulfil.transformRequest(params);
       var request = $http.post(
         tryton.serverUrl + (database || ''),
         {
           'method': method,
-          'params': params || []
+          'params': _params || []
         }
       );
       return request;
