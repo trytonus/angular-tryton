@@ -4,6 +4,7 @@
 goog.provide('angular.tryton.PYSON');
 
 goog.require('goog.object');
+goog.require('goog.date.Interval');
 
 
 goog.scope(function() {
@@ -46,6 +47,14 @@ goog.scope(function() {
         return PYSON.If.call(this, pysonObj);
       case 'Get':
         return PYSON.Get.call(this, pysonObj);
+      case 'In':
+        return PYSON.In.call(this, pysonObj);
+      case 'Date':
+        return PYSON.Date.call(this, pysonObj);
+      case 'DateTime':
+        return PYSON.DateTime.call(this, pysonObj);
+      case 'Len':
+        return PYSON.Len.call(this, pysonObj);
     }
   };
 
@@ -143,5 +152,55 @@ goog.scope(function() {
     } else {
       return value.d;
     }
+  };
+
+  PYSON.In = function (value) {
+    if (goog.isArray(value.v)) {
+      return goog.object.contains(value.v, value.k);
+    } else {
+      return goog.object.containsKey(value.v, value.k);
+    }
+  };
+
+  PYSON.Date = function (value) {
+    var interval = new goog.date.Interval();
+    var date = new Fulfil.datatype.Date(
+      value.y,
+      value.M && value.M - 1,
+      value.d
+    );
+
+    if (value.dy) interval.years = value.dy;
+    if (value.dM) interval.months = value.dM;
+    if (value.dd) interval.days = value.dd;
+    date.add(interval)
+    return date;
+  };
+
+  PYSON.DateTime = function (value) {
+    var interval = new goog.date.Interval();
+    var date = new Fulfil.datatype.DateTime(
+      value.y,
+      value.M && value.M - 1,
+      value.d,
+      value.h,
+      value.m,
+      value.s,
+      value.ms && value.ms / 1000
+    );
+
+    if (value.dy) interval.years = value.dy;
+    if (value.dM) interval.months = value.dM;
+    if (value.dd) interval.days = value.dd;
+    if (value.dh) interval.hours = value.dh;
+    if (value.dm) interval.minutes = value.dm;
+    if (value.ds) interval.seconds = value.ds;
+    // TODO: Handle ms
+    date.add(interval)
+    return date;
+  };
+
+  PYSON.Len = function (value) {
+    return goog.object.getCount(value.v);
   };
 });   // goog.scope
