@@ -127,8 +127,9 @@ goog.scope(function() {
   /**
    * @return {boolean}
    */
-  PYSON.Less = function (value) {
-    value = goog.object.extend({}, value);
+  PYSON.Less = function (v) {
+    var value = {};
+    goog.object.extend(value, v);
     value.s1 = Number(value.s1);
     value.s2 = Number(value.s2);
     if (value.e) {
