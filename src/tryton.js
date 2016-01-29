@@ -395,7 +395,7 @@ goog.scope(function() {
    * RPC client that automatically handles authentication and context for you.
    *
    */
-  .service('session', ['tryton', '$localStorage', '$sessionStorage', '$q', function(tryton, $localStorage, $sessionStorage, $q) {
+  .service('session', ['tryton', '$localStorage', '$q', function(tryton, $localStorage, $q) {
     // Controller for managing tryton session
 
     var session = this;
@@ -451,18 +451,18 @@ goog.scope(function() {
       @methodOf fulfil.angular-tryton.service:session
 
       @description
-        Sets session properties from sessionStorage and localStorage.
+        Sets session properties from localStorage.
 
-        To be prcise, loads sessionId and context from sessionStorage and userId,
+        To be prcise, loads sessionId and context from localStorage and userId,
         login, database from localStorage.
     **/
     session.loadAllFromStorage = function() {
       // Load the values of the variables from the cookiestore.
       session.userId = $localStorage.userId;
-      session.sessionId = $sessionStorage.sessionId;
+      session.sessionId = $localStorage.sessionId;
       session.database = $localStorage.database;
       session.login = $localStorage.login;
-      session.context = $sessionStorage.context;
+      session.context = $localStorage.context;
       tryton.serverUrl = $localStorage.serverUrl || '/';
     };
 
@@ -478,8 +478,8 @@ goog.scope(function() {
 
       // Now remove the values from the cookie store
       delete $localStorage.userId;
-      delete $sessionStorage.sessionId;
-      delete $sessionStorage.context;
+      delete $localStorage.sessionId;
+      delete $localStorage.context;
     };
 
     /**
@@ -506,9 +506,9 @@ goog.scope(function() {
       $localStorage.database = _database || null;
       $localStorage.login = _login || null;
       $localStorage.userId = _userId || null;
-      $sessionStorage.sessionId = _sessionId || null;
+      $localStorage.sessionId = _sessionId || null;
 
-      // Now that everything is stored to localStorage/sessionStorage, reuse the loadAllFromStorage
+      // Now that everything is stored to localStorage, reuse the loadAllFromStorage
       // method to load values into variables here.
       session.loadAllFromStorage();
     };
@@ -592,7 +592,7 @@ goog.scope(function() {
     };
 
     this.setDefaultContext = function (_context) {
-      $sessionStorage.context = _context || null;
+      $localStorage.context = _context || null;
       session.loadAllFromStorage();
     };
 
