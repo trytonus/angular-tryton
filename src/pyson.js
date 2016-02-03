@@ -6,9 +6,13 @@ goog.provide('angular.tryton.PYSON');
 goog.require('goog.object');
 goog.require('goog.date.Interval');
 
+goog.require('angular.tryton.fulfil');
+
 
 goog.scope(function() {
   'use strict';
+
+  var Fulfil = angular.tryton.fulfil;
 
   /**
    * Pyson Service.
@@ -56,6 +60,14 @@ goog.scope(function() {
       case 'Len':
         return PYSON.Len.call(this, pysonObj);
     }
+  };
+
+  /**
+   * This method accept data object and convert that to pyson string
+   * @param
+   */
+  PYSON.prototype.fromObject = function(dataObject) {
+    return JSON.stringify(Fulfil.transformRequest(dataObject));
   };
 
   PYSON.Eval = function (value, context) {
