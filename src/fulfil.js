@@ -226,6 +226,11 @@ goog.scope(function() {
     return date;
   };
 
+  Fulfil.datatype.Date.clone = function (date) {
+    var value = date.clone();
+    value.isDate = true;
+    return value;
+  };
   Fulfil.datatype.Date.min = dateTime.fromTimestamp(-100000000 * 86400000);
   Fulfil.datatype.Date.min.setHours(0);
   Fulfil.datatype.Date.min.setMinutes(0);
@@ -267,6 +272,11 @@ goog.scope(function() {
     return datetime;
   };
 
+  Fulfil.datatype.Datetime.clone = function (datetime) {
+    var value = datetime.clone();
+    value.isDateTime = true;
+    return value;
+  };
   Fulfil.datatype.DateTime.min = dateTime.fromTimestamp(-100000000 * 86400000);
   Fulfil.datatype.DateTime.min.isDateTime = true;
   Fulfil.datatype.DateTime.max = dateTime.fromTimestamp(100000000 * 86400000);
