@@ -272,7 +272,7 @@ goog.scope(function() {
     return datetime;
   };
 
-  Fulfil.datatype.Datetime.clone = function (datetime) {
+  Fulfil.datatype.DateTime.clone = function (datetime) {
     var value = datetime.clone();
     value.isDateTime = true;
     return value;
