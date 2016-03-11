@@ -4,6 +4,7 @@
 
     Fab file to build and push documentation to github
 
+    :copyright: © 2015-2016 by Fulfil.io Inc.
     :copyright: © 2013-2014 by Openlabs Technologies & Consulting (P) Limited
     :license: BSD, see LICENSE for more details.
 """

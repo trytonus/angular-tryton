@@ -54,12 +54,12 @@ into a commit (or two) in easy steps:
 Authors and Contributors
 ------------------------
 
-This module was built at [Openlabs](http://www.fulfil.io). 
+This module was built at [Openlabs](http://www.openlabs.co.in).
 
 
 Professional Support
 --------------------
 
-This module is professionally supported by [Openlabs](http://www.fulfil.io).
+This module is professionally supported by [Fulfil.io](http://www.fulfil.io).
 If you are looking for on-site teaching or consulting support, contact our
 [sales](mailto:sales@fulfil.io) and [support](mailto:support@fulfil.io) teams.
