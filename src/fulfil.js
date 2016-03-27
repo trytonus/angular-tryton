@@ -1,5 +1,5 @@
-goog.provide('angular.tryton.fulfil');
-goog.provide('angular.tryton.fulfil.datatype');
+goog.provide('ng.tryton.fulfil');
+goog.provide('ng.tryton.fulfil.datatype');
 
 goog.require('goog.date.Date');
 goog.require('goog.date.DateTime');
@@ -10,8 +10,8 @@ goog.require('goog.date.Interval');
 goog.scope(function() {
   'use strict';
 
-  var Fulfil = angular.tryton.fulfil;
-  Fulfil.datatype = angular.tryton.fulfil.datatype;
+  var Fulfil = ng.tryton.fulfil;
+  Fulfil.datatype = ng.tryton.fulfil.datatype;
   var dateTime = goog.date.DateTime;
   var utcDateTime = goog.date.UtcDateTime;
   var interval = goog.date.Interval;
