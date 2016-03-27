@@ -11,7 +11,7 @@ goog.scope(function() {
   'use strict';
 
   var Fulfil = ng.tryton.fulfil;
-  Fulfil.datatype = ng.tryton.fulfil.datatype;
+  Fulfil.datatype = {};  // Need to initialize with Object for compilation
   var dateTime = goog.date.DateTime;
   var utcDateTime = goog.date.UtcDateTime;
   var interval = goog.date.Interval;
