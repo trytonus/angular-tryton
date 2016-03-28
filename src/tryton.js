@@ -1,14 +1,14 @@
-goog.provide('angular.tryton');
+goog.provide('ng.tryton');
 
-goog.require('angular.tryton.fulfil');
-goog.require('angular.tryton.PYSON');
+goog.require('ng.tryton.fulfil');
+goog.require('ng.tryton.PYSON');
 
 
 goog.scope(function() {
   'use strict';
 
-  var Fulfil = angular.tryton.fulfil;
-  var PYSON = angular.tryton.PYSON;
+  var Fulfil = ng.tryton.fulfil;
+  var PYSON = ng.tryton.PYSON;
 
   /**
    * @ngdoc overview
@@ -56,7 +56,7 @@ goog.scope(function() {
 
   **/
 
-  var angularTryton = angular.tryton;
+  var angularTryton = ng.tryton;
 
   angularTryton.module = angular.module('fulfil.angular-tryton', ['ngStorage'])
   .config(['$httpProvider', 'sessionProvider', function($httpProvider, sessionProvider) {

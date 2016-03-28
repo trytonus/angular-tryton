@@ -1,26 +1,26 @@
 /*
  Inspired by pyson.js implementation in Sao.
  */
-goog.provide('angular.tryton.PYSON');
+goog.provide('ng.tryton.PYSON');
 
 goog.require('goog.object');
 goog.require('goog.date.Interval');
 
-goog.require('angular.tryton.fulfil');
+goog.require('ng.tryton.fulfil');
 
 
 goog.scope(function() {
   'use strict';
 
-  var Fulfil = angular.tryton.fulfil;
+  var Fulfil = ng.tryton.fulfil;
 
   /**
    * Pyson Service.
    * @constructor
    */
-  angular.tryton.PYSON = function() {};
+  ng.tryton.PYSON = function() {};
 
-  var PYSON = angular.tryton.PYSON;
+  var PYSON = ng.tryton.PYSON;
 
   /**
    * This method accepts JSON parsed PYSON object.
