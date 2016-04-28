@@ -277,6 +277,12 @@ goog.scope(function() {
     value.isDateTime = true;
     return value;
   };
+
+  Fulfil.datatype.DateTime.now = function () {
+    var value = new dateTime();
+    value.isDateTime = true;
+    return value;
+  };
   Fulfil.datatype.DateTime.min = dateTime.fromTimestamp(-100000000 * 86400000);
   Fulfil.datatype.DateTime.min.isDateTime = true;
   Fulfil.datatype.DateTime.max = dateTime.fromTimestamp(100000000 * 86400000);
