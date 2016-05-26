@@ -173,11 +173,14 @@ goog.scope(function() {
       if (response_obj.hasOwnProperty(key)) {
         var value = response_obj[key];
         if (typeof value == "object") {
-          value = Fulfil.transformResponse(value);
+          transformed_res[key] = Fulfil.transformResponse(value);
         }
-        transformed_res[key] = Fulfil.reviver(key, value);
+        else {
+          transformed_res[key] = Fulfil.reviver(key, value);
+        }
       }
     }
+    transformed_res = Fulfil.reviver(null, transformed_res);
     return transformed_res;
   };
 
