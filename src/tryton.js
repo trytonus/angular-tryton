@@ -220,9 +220,9 @@ goog.scope(function() {
     // Transform the return value by sending the result instead of the ID and
     // result object
     var trytonResponseTransformer = function(response, headerGetter) {
-      if (response.hasOwnProperty('result')) {
+      if (response && response.hasOwnProperty('result')) {
         return Fulfil.transformResponse(response.result);
-      } else if (response.hasOwnProperty('error')) {
+      } else if (response && response.hasOwnProperty('error')) {
         var error = response.error;
         error['__error__'] = true;
         return error;
