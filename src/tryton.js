@@ -674,7 +674,7 @@ goog.scope(function() {
         if(!getPreferences) {
           finalDeferred.resolve(loginResponse);
         } else {
-          session.rpc('model.res.user.get_preferences', false)
+          session.rpc('model.res.user.get_preferences', true)
             .success(function(preferences) {
               session.setDefaultContext(preferences);
               finalDeferred.resolve(loginResponse);
