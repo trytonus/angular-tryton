@@ -2,6 +2,7 @@ goog.provide('ng.tryton');
 
 goog.require('ng.tryton.fulfil');
 goog.require('ng.tryton.PYSON');
+goog.require('goog.crypt.base64');
 
 
 goog.scope(function() {
@@ -68,16 +69,19 @@ goog.scope(function() {
           // Handle the cases where the response is an error.
           // The __error__ attribute is set by the response Transformer
           var error = angular.copy(response.data);
-          if (error[0] == 'NotLogged') {
+          if (error[0].startsWith('401') || error[0].startsWith('403')) {
             /**
              * @ngdoc event
-             * @name tryton:NotLogged
+             * @name tryton:Unauthorized
              * @eventOf fulfil.angular-tryton.service:tryton
              * @eventType broadcast on root scope
              *
              * @description
              *
-             *  **tryton:NotLogged**
+             *  **tryton:Unauthorized**
+             *
+             *  HTTP: 401: Unauthorized
+             *  HTTP: 403: Session is expired and user is not allowed to access.
              *
              *  Raised when the current session token is expired or invalid.
              *  Depending on the application, it could decide to logoff the user
@@ -87,13 +91,13 @@ goog.scope(function() {
              *  Example:
              *
              *  ```js
-             *  $rootScope.$on('tryton:NotLogged', function(){
+             *  $rootScope.$on('tryton:Unauthorized', function(){
              *    // do something
              *  })
              *  ```
              *
              */
-            $rootScope.$broadcast('tryton:NotLogged');
+            $rootScope.$broadcast('tryton:Unauthorized');
           } else if (error[0] == 'UserError') {
             /**
              * @ngdoc event
@@ -318,7 +322,7 @@ goog.scope(function() {
           </file>
         </example>
     **/
-    this.rpc = function(method, params, database) {
+    this.rpc = function(method, params, database, session) {
       // XXX: This can not be done angular http.transformRequest
       // as that method is called after serializing request data.
       var _params = Fulfil.transformRequest(params);
@@ -327,6 +331,11 @@ goog.scope(function() {
         {
           'method': method,
           'params': _params || []
+        },
+        {
+          headers: {
+            'Authorization': 'Session ' + session
+          }
         }
       );
       return request;
@@ -563,7 +572,7 @@ goog.scope(function() {
       // session and the database in the session
 
       // Construct parameters: [userId, sessionId, param1, param2,... context]
-      var params = [session.userId, session.sessionId].concat((_params || []));
+      var params = _params || [];
 
       var requestContext = angular.copy((session.context || {}));
       if (_context !== undefined) {
@@ -571,7 +580,7 @@ goog.scope(function() {
       }
       params.push(requestContext);
 
-      return tryton.rpc(_method, params, session.database);
+      return tryton.rpc(_method, params, session.database, session.sessionId);
     };
 
     /**
@@ -585,7 +594,9 @@ goog.scope(function() {
       @returns {Promise} Promise that will be resolved on successful response.
     **/
     this.doLogout = function() {
-      var promise = session.rpc('common.db.logout');
+      var promise = tryton.rpc(
+        'common.db.logout', [], session.database, session.sessionId
+      );
       // Clean logout of the user
       clearSession();
       return promise;
@@ -600,12 +611,15 @@ goog.scope(function() {
       // call login on tryton server and if the login is succesful set the
       // userId and session
       var deferred = $q.defer();
-      tryton.rpc( 'common.login', [_username, _password], _database)
+      tryton.rpc( 'common.db.login', [_username, _password], _database)
        .success(function(result) {
          // Since trytond returns an Array with userId and sessionId on successful
          // login and an error Object on error; false if bad credentials.
          if (result instanceof Array) {
-           session.setSession(_database, _username, result[0], result[1]);
+           var sessionId = goog.crypt.base64.encodeString(
+             _username + ':' + result[0] + ':' + result[1]
+           );
+           session.setSession(_database, _username, result[0], sessionId);
          }
          deferred.resolve(result);
        })
@@ -674,7 +688,7 @@ goog.scope(function() {
         if(!getPreferences) {
           finalDeferred.resolve(loginResponse);
         } else {
-          session.rpc('model.res.user.get_preferences', true)
+          session.rpc('model.res.user.get_preferences', [true])
             .success(function(preferences) {
               session.setDefaultContext(preferences);
               finalDeferred.resolve(loginResponse);
