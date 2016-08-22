@@ -572,7 +572,7 @@ goog.scope(function() {
       // session and the database in the session
 
       // Construct parameters: [userId, sessionId, param1, param2,... context]
-      var params = _params || [];
+      var params = goog.array.clone(_params || []);
 
       var requestContext = angular.copy((session.context || {}));
       if (_context !== undefined) {
