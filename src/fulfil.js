@@ -70,6 +70,9 @@ goog.scope(function() {
     return value;
   };
 
+  Fulfil.toJson = function (value) {
+    return angular.toJson(Fulfil.transformRequest(value));
+  };
   Fulfil.transformRequest = function (value) {
     if (!goog.isDefAndNotNull(value)) {
       return value;
@@ -152,6 +155,9 @@ goog.scope(function() {
     return value;
   };
 
+  Fulfil.fromJson = function (value) {
+    return Fulfil.transformResponse(angular.fromJson(value));
+  };
   Fulfil.transformResponse = function (response_obj) {
     /*
      * This method transforms response from tryton server and replace
