@@ -109,7 +109,9 @@ goog.scope(function() {
     var result = false;
     for (var i = 0, len = value.s.length; i < len; i++) {
       var statement = value.s[i];
-      result = result || statement;
+      result = result || (
+        goog.isObject(statement) ? !goog.object.isEmpty(statement) : !!statement
+      );
     }
     return result;
   };
