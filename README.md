@@ -18,11 +18,11 @@ bower install fio-angular-tryton
 Usage
 -----
 
-### Require `fulfil.angular-tryton` and Inject the Services
+### Require `ng.tryton` and Inject the Services
 
 ```javascript
 angular.module('app', [
-    'fulfil.angular-tryton'
+    'ng.tryton'
 ]).controller('Ctrl', function(
     $scope,
     tryton,
