@@ -302,12 +302,25 @@ goog.scope(function() {
    */
   Fulfil.datatype.Time = function (hour, minute, second, millisecond) {
     var time = new dateTime();
-    time.setHours(hour);
-    time.setMinutes(minute);
-    time.setSeconds(second);
-    time.setMilliseconds(millisecond || 0);
+    if (hour) {
+      time.setHours(hour);
+    }
+    if (minute) {
+      time.setMinutes(minute);
+    }
+    if (second) {
+      time.setSeconds(second);
+    }
+    if (millisecond) {
+      time.setMilliseconds(millisecond || 0);
+    }
     time.isTime = true;
     return time;
+  };
+  Fulfil.datatype.Time.clone = function (time) {
+    var value = time.clone();
+    value.isTime = true;
+    return value;
   };
 
   /*
