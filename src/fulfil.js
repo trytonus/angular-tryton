@@ -302,17 +302,17 @@ goog.scope(function() {
    */
   Fulfil.datatype.Time = function (hour, minute, second, millisecond) {
     var time = new dateTime();
-    if (hour) {
+    if (goog.isDefAndNotNull(hour)) {
       time.setHours(hour);
     }
-    if (minute) {
+    if (goog.isDefAndNotNull(minute)) {
       time.setMinutes(minute);
     }
-    if (second) {
+    if (goog.isDefAndNotNull(second)) {
       time.setSeconds(second);
     }
-    if (millisecond) {
-      time.setMilliseconds(millisecond || 0);
+    if (goog.isDefAndNotNull(millisecond)) {
+      time.setMilliseconds(millisecond);
     }
     time.isTime = true;
     return time;
