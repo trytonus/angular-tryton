@@ -233,6 +233,8 @@ goog.scope(function() {
       }
       return response;
     };
+    // This identifier can be used to insert other transformers before this
+    trytonResponseTransformer.identifier = "trytonResponseTransformer";
     $httpProvider.defaults.transformResponse.push(trytonResponseTransformer);
   }])
 
