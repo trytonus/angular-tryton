@@ -64,6 +64,11 @@ goog.scope(function() {
         value.microsecond && value.microsecond / 1000
       );
     }
+    if (__class__ === 'timedelta') {
+      return new Fulfil.datatype.TimeDelta(
+        0, 0, 0, 0, 0, value.seconds
+      );
+    }
     if (__class__ === 'buffer') {
       // TODO: Handle buffer
     }
