@@ -632,6 +632,16 @@ goog.scope(function() {
     };
 
     /**
+      @ngdoc property
+      @name loginMethod
+      @propertyOf fulfil.angular-tryton.service:session
+
+      @description
+        Method to use for login
+    **/
+    this.loginMethod = undefined;
+
+    /**
       @ngdoc method
       @name doLogin
       @methodOf fulfil.angular-tryton.service:session
@@ -654,17 +664,18 @@ goog.scope(function() {
       // (if true) should make the call to `doLogin` failed as a whole, which is
       // done in `finalDeferred`.
       var finalDeferred = $q.defer();
+      var loginMethod = this.loginMethod || _tryLogin;
 
       var urlRegex = /^https?:\/\//i;
       var loginPromise;
       // Make sure URL has http or https in it.
       if(urlRegex.test(tryton.serverUrl) || tryton.serverUrl === '/') {
-        loginPromise = _tryLogin(_database, _username, _password);
+        loginPromise = loginMethod(_database, _username, _password);
       } else {
         // If URL doesn't have protocol, try https first then http.
         tryton.setServerUrl('https://' + tryton.serverUrl);
         loginPromise = loginDeferred.promise;
-        _tryLogin(_database, _username, _password)
+        loginMethod(_database, _username, _password)
           .then(function(result){
             loginDeferred.resolve(result);
           }, function(reason){
@@ -673,7 +684,7 @@ goog.scope(function() {
               tryton.setServerUrl(
                 tryton.serverUrl.replace(/^https/i, 'http')
               );
-              _tryLogin(_database, _username, _password)
+              loginMethod(_database, _username, _password)
                 .then(function(result){
                   loginDeferred.resolve(result);
                 }, function(reason){
