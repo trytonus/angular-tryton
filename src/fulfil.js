@@ -106,7 +106,6 @@ goog.scope(function() {
       };
     }
     if (value.isDateTime) {
-      value = value.clone();
       return {
         '__class__': 'datetime',
         'year': value.getUTCFullYear(),
