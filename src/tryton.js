@@ -255,7 +255,7 @@ goog.scope(function() {
    * RPC client that automatically handles authentication and context for you.
    *
    */
-  .service('tryton', ['$http', '$rootScope', '$localStorage', function ($http, $rootScope, $localStorage) {
+  .service('tryton', ['$http', '$rootScope', '$q', '$localStorage', function ($http, $rootScope, $q, $localStorage) {
     var tryton = this;
 
     /**
@@ -328,6 +328,7 @@ goog.scope(function() {
       // XXX: This can not be done angular http.transformRequest
       // as that method is called after serializing request data.
       var _params = Fulfil.transformRequest(params);
+      var canceller = $q.defer();
       var request = $http.post(
         tryton.serverUrl + (database || ''),
         {
@@ -337,9 +338,11 @@ goog.scope(function() {
         {
           headers: {
             'Authorization': 'Session ' + session
-          }
+          },
+          timeout: canceller.promise
         }
       );
+      request.canceller = canceller;
       return request;
     };
 
