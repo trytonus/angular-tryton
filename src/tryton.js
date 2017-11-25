@@ -652,6 +652,17 @@ goog.scope(function() {
     **/
     this.loginMethod = undefined;
 
+
+    /**
+     * Reload default context
+     */
+    this.refreshDefaultContext = function () {
+      return session.rpc('model.res.user.get_preferences', [true])
+        .success(function(preferences) {
+          session.setDefaultContext(preferences);
+        });
+    };
+
     /**
       @ngdoc method
       @name doLogin
@@ -712,9 +723,8 @@ goog.scope(function() {
         if(!getPreferences) {
           finalDeferred.resolve(loginResponse);
         } else {
-          session.rpc('model.res.user.get_preferences', [true])
+          session.refreshDefaultContext()
             .success(function(preferences) {
-              session.setDefaultContext(preferences);
               finalDeferred.resolve(loginResponse);
             })
             .error(function(reason) {
