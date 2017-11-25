@@ -471,7 +471,7 @@ goog.scope(function() {
         login, database from localStorage.
     **/
     session.loadAllFromStorage = function() {
-      // Load the values of the variables from the cookiestore.
+      // Load the values of the variables from the localStorage.
       session.userId = $localStorage.userId;
       session.sessionId = $localStorage.sessionId;
       session.database = $localStorage.database;
@@ -573,6 +573,10 @@ goog.scope(function() {
 
     **/
     this.rpc = function(_method, _params, _context) {
+      // Reload session from localStorage making localStorage as single source
+      // of truth.
+      session.loadAllFromStorage();
+
       // Make a remote procedure call to tryton with the current user ID
       // session and the database in the session
 
@@ -599,6 +603,10 @@ goog.scope(function() {
       @returns {Promise} Promise that will be resolved on successful response.
     **/
     this.doLogout = function() {
+      // Reload session from localStorage making localStorage as single source
+      // of truth.
+      session.loadAllFromStorage();
+
       var promise = tryton.rpc(
         'common.db.logout', [], session.database, session.sessionId
       );
