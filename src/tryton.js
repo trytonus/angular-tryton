@@ -655,13 +655,21 @@ goog.scope(function() {
 
     /**
      * Reload default context
+     *
+     * This is special case where current context should not be sent at all.
+     * So this method achieves that by temporarily removing context for this
+     * request only.
      */
     this.refreshDefaultContext = function () {
-      return session.rpc('model.res.user.get_preferences', [true])
+      var _context = session.context;
+      res = session.rpc('model.res.user.get_preferences', [true])
         .success(function(preferences) {
           session.setDefaultContext(preferences);
         });
+      session.context = _context;
+      return res
     };
+
 
     /**
       @ngdoc method
