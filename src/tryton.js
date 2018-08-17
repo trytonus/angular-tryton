@@ -655,13 +655,18 @@ goog.scope(function() {
 
     /**
      * Reload default context
+     *
+     * This is special case where context should be sent as null.
      */
     this.refreshDefaultContext = function () {
-      return session.rpc('model.res.user.get_preferences', [true])
-        .success(function(preferences) {
-          session.setDefaultContext(preferences);
-        });
+      return tryton.rpc(
+        'model.res.user.get_preferences', [true, {}],
+        session.database, session.sessionId
+      ).success(function(preferences) {
+        session.setDefaultContext(preferences);
+      });
     };
+
 
     /**
       @ngdoc method
