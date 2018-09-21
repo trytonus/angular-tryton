@@ -53,8 +53,10 @@ goog.scope(function() {
         return PYSON.Get.call(this, pysonObj);
       case 'In':
         return PYSON.In.call(this, pysonObj);
+      case 'date':
       case 'Date':
         return PYSON.Date.call(this, pysonObj);
+      case 'datetime':
       case 'DateTime':
         return PYSON.DateTime.call(this, pysonObj);
       case 'Len':
@@ -178,11 +180,13 @@ goog.scope(function() {
   };
 
   PYSON.Date = function (value) {
-    var interval = new goog.date.Interval();
-    var date = new Fulfil.datatype.Date(
-      value.y,
-      value.M && value.M - 1,
-      value.d
+    let interval = new goog.date.Interval();
+    let month = value.M || value.month;
+
+    let date = new Fulfil.datatype.Date(
+      value.y || value.year,
+      month && month - 1,
+      value.d || value.day
     );
 
     if (value.dy) interval.years = value.dy;
@@ -194,14 +198,16 @@ goog.scope(function() {
 
   PYSON.DateTime = function (value) {
     var interval = new goog.date.Interval();
+    let month = value.M || value.month;
+    let ms = value.ms || value.microsecond;
     var date = new Fulfil.datatype.DateTime(
-      value.y,
-      value.M && value.M - 1,
-      value.d,
-      value.h,
-      value.m,
-      value.s,
-      value.ms && value.ms / 1000
+      value.y || value.year,
+      month && month - 1,
+      value.d || value.day,
+      value.h || value.hour,
+      value.m || value.minute,
+      value.s || value.second,
+      ms && ms / 1000
     );
 
     if (value.dy) interval.years = value.dy;
