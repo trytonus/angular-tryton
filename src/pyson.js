@@ -207,7 +207,8 @@ goog.scope(function() {
       value.h || value.hour,
       value.m || value.minute,
       value.s || value.second,
-      ms && ms / 1000
+      ms && ms / 1000,
+      true
     );
 
     if (value.dy) interval.years = value.dy;
