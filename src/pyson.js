@@ -61,6 +61,8 @@ goog.scope(function() {
         return PYSON.DateTime.call(this, pysonObj);
       case 'Len':
         return PYSON.Len.call(this, pysonObj);
+      case 'Decimal':
+        return PYSON.Decimal.call(this, pysonObj);
     }
   };
 
@@ -225,4 +227,8 @@ goog.scope(function() {
   PYSON.Len = function (value) {
     return goog.object.getCount(value.v);
   };
+
+  PYSON.Decimal = function(value) {
+    return new Fulfil.datatype.Decimal(value.decimal);
+  }
 });   // goog.scope
