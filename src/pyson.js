@@ -182,27 +182,34 @@ goog.scope(function() {
   };
 
   PYSON.Date = function (value) {
-    let interval = new goog.date.Interval();
+    const deltaObj = {};
     let month = value.M || value.month;
 
-    let date = new Fulfil.datatype.Date(
+    if (value.dy) deltaObj.years = value.dy;
+    if (value.dM) deltaObj.months = value.dM;
+    if (value.dd) deltaObj.days = value.dd;
+
+    return new Fulfil.datatype.Date(
       value.y || value.year,
       month && month - 1,
-      value.d || value.day
+      value.d || value.day,
+      deltaObj
     );
-
-    if (value.dy) interval.years = value.dy;
-    if (value.dM) interval.months = value.dM;
-    if (value.dd) interval.days = value.dd;
-    date.add(interval)
-    return date;
   };
 
   PYSON.DateTime = function (value) {
-    var interval = new goog.date.Interval();
+    const deltaObj = {};
     let month = value.M || value.month;
     let ms = value.ms || value.microsecond;
-    var date = new Fulfil.datatype.DateTime(
+
+    if (value.dy) deltaObj.years = value.dy;
+    if (value.dM) deltaObj.months = value.dM;
+    if (value.dd) deltaObj.days = value.dd;
+    if (value.dh) deltaObj.hours = value.dh;
+    if (value.dm) deltaObj.minutes = value.dm;
+    if (value.ds) deltaObj.seconds = value.ds;
+
+    return new Fulfil.datatype.DateTime(
       value.y || value.year,
       month && month - 1,
       value.d || value.day,
@@ -210,18 +217,9 @@ goog.scope(function() {
       value.m || value.minute,
       value.s || value.second,
       ms && ms / 1000,
-      true
-    );
-
-    if (value.dy) interval.years = value.dy;
-    if (value.dM) interval.months = value.dM;
-    if (value.dd) interval.days = value.dd;
-    if (value.dh) interval.hours = value.dh;
-    if (value.dm) interval.minutes = value.dm;
-    if (value.ds) interval.seconds = value.ds;
-    // TODO: Handle ms
-    date.add(interval)
-    return date;
+      true,
+      deltaObj
+    )
   };
 
   PYSON.Len = function (value) {

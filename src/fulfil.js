@@ -98,15 +98,24 @@ goog.scope(function() {
       });
     }
     if (value.isDate) {
-      return {
+      const result = {
         '__class__': 'date',
         'year': value.getYear(),
         'month': value.getMonth() + 1,
         'day': value.getDate()
       };
+
+      // Respect delta as this is being used as pyson serializer
+      if (value.delta) {
+        result.dy = value.delta.years;
+        result.dM = value.delta.months;
+        result.dd = value.delta.days;
+      }
+
+      return result;
     }
     if (value.isDateTime) {
-      return {
+      const result = {
         '__class__': 'datetime',
         'year': value.getUTCFullYear(),
         'month': value.getUTCMonth() + 1,
@@ -116,6 +125,18 @@ goog.scope(function() {
         'second': value.getUTCSeconds(),
         'microsecond': value.getUTCMilliseconds() * 1000
       };
+
+      // Respect delta as this is being used as pyson serializer
+      if (value.delta) {
+        result.dy = value.delta.years;
+        result.dM = value.delta.months;
+        result.dd = value.delta.days;
+        result.dh = value.delta.hours;
+        result.dm = value.delta.minutes;
+        result.ds = value.delta.second;
+      }
+
+      return result;
     }
     if (value.isTime) {
       return {
@@ -242,8 +263,29 @@ goog.scope(function() {
   /*
    * Date field
    */
-  Fulfil.datatype.Date = function (year, month, day) {
-    var date = new goog.date.Date(year, month, day);
+  Fulfil.datatype.Date = function (year, month, day, delta) {
+    var date;
+
+    /**
+     * @desc Boolean to check if there is atleast one truthy value in delta object
+     * @const {Boolean}
+     */
+    const hasDeltaValues = delta && Object.values(delta).some(x => x != null);
+
+    if (hasDeltaValues) {
+      date = new goog.date.Date();
+      date.setDate(date.getDate() + (delta.days || 0));
+      date.setMonth(date.getMonth() + (delta.months || 0));
+      date.setYear(date.getYear() + (delta.years || 0));
+      date.delta = {
+        years: delta.years,
+        months: delta.months,
+        days: delta.days
+      };
+    } else {
+      date = new goog.date.Date(year, month, day);
+    }
+
     date.isDate = true;
     return date;
   };
@@ -270,14 +312,38 @@ goog.scope(function() {
    * Datetime field
    */
   Fulfil.datatype.DateTime = function (year, month, day, hour, minute, second,
-                                       millisecond, utc) {
-    var datetime;
+                                       millisecond, utc, delta) {
+    var datetime, dateClass;
     if (utc) {
-      datetime = new utcDateTime(
-        year, month, day, hour || 0, minute || 0, second || 0, millisecond || 0
-      );
+      dateClass = utcDateTime;
     } else {
-      datetime = new dateTime(
+      dateClass = dateTime;
+    }
+
+    /**
+     * @desc Boolean to check if there is atleast one truthy value in delta object
+     * @const {Boolean}
+     */
+    const hasDeltaValues = delta && Object.values(delta).some(x => x != null);
+
+    if (hasDeltaValues) {
+      datetime = new dateClass();
+      datetime.setDate(datetime.getDate() + (delta.days || 0));
+      datetime.setMonth(datetime.getMonth() + (delta.months || 0));
+      datetime.setYear(datetime.getYear() + (delta.years || 0));
+      datetime.setHours(datetime.getHours() + (delta.months || 0));
+      datetime.setMinutes(datetime.getMinutes() + (delta.months || 0));
+      datetime.setSeconds(datetime.getSeconds() + (delta.months || 0));
+      datetime.delta = {
+        years: delta.years,
+        months: delta.months,
+        days: delta.days,
+        hours: delta.hours,
+        minutes: delta.minutes,
+        seconds: delta.seconds
+      };
+    } else {
+      datetime = new dateClass(
         year, month, day, hour || 0, minute || 0, second || 0, millisecond || 0
       );
     }
