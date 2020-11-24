@@ -38,6 +38,19 @@ goog.scope(function() {
     }
 
     if (__class__ === 'datetime') {
+      /**
+       * Delta values have been respected in reviver,
+       * as fromJson method is used to parse url query string
+       */
+      const deltaObj = {};
+
+      if (value.dy) deltaObj.years = value.dy;
+      if (value.dM) deltaObj.months = value.dM;
+      if (value.dd) deltaObj.days = value.dd;
+      if (value.dh) deltaObj.hours = value.dh;
+      if (value.dm) deltaObj.minutes = value.dm;
+      if (value.ds) deltaObj.seconds = value.ds;
+
       return new Fulfil.datatype.DateTime(
         value.year,
         value.month && value.month - 1,
@@ -46,10 +59,21 @@ goog.scope(function() {
         value.minute,
         value.second,
         value.microsecond && value.microsecond / 1000,
-        true
+        true,
+        deltaObj
       );
     }
     if (__class__ === 'date') {
+      /**
+       * Delta values have been respected in reviver,
+       * as fromJson method is used to parse url query string
+       */
+      const deltaObj = {};
+
+      if (value.dy) deltaObj.years = value.dy;
+      if (value.dM) deltaObj.months = value.dM;
+      if (value.dd) deltaObj.days = value.dd;
+
       return new Fulfil.datatype.Date(
         value.year,
         value.month && value.month - 1,
