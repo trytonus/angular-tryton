@@ -77,7 +77,8 @@ goog.scope(function() {
       return new Fulfil.datatype.Date(
         value.year,
         value.month && value.month - 1,
-        value.day
+        value.day,
+        deltaObj
       );
     }
     if (__class__ === 'time') {
