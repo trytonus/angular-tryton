@@ -69,7 +69,25 @@ goog.scope(function() {
           // Handle the cases where the response is an error.
           // The __error__ attribute is set by the response Transformer
           var error = angular.copy(response.data);
-          if (error[0].startsWith('401') || error[0].startsWith('403')) {
+
+          if (error instanceof Array) {
+            const [type, [message, description]] = error;
+
+            error = {
+              type,
+              message,
+              description,
+            };
+          }
+
+          const { type, code } = error;
+
+          if (
+            type.startsWith('401') ||
+            type.startsWith('403') ||
+            code === 'H403' ||
+            code === 'H401'
+          ) {
             /**
              * @ngdoc event
              * @name tryton:Unauthorized
@@ -98,7 +116,7 @@ goog.scope(function() {
              *
              */
             $rootScope.$broadcast('tryton:Unauthorized');
-          } else if (error[0] == 'UserError') {
+          } else if (type == 'UserError') {
             /**
              * @ngdoc event
              * @name tryton:UserError
@@ -122,8 +140,8 @@ goog.scope(function() {
              *  ```
              *
              */
-            $rootScope.$broadcast('tryton:UserError', error[1], error[2]);
-          } else if (error[0] == 'UserWarning') {
+            $rootScope.$broadcast('tryton:UserError', error);
+          } else if (type == 'UserWarning') {
             /**
              * @ngdoc event
              * @name tryton:UserWarning
@@ -148,8 +166,8 @@ goog.scope(function() {
              *  ```
              *
              */
-            $rootScope.$broadcast('tryton:UserWarning', error[1], error[2], error[3]);
-          } else if (error[0] == 'ConcurrencyException') {
+            $rootScope.$broadcast('tryton:UserWarning', error);
+          } else if (type == 'ConcurrencyException') {
             /**
              * @ngdoc event
              * @name tryton:ConcurrencyException
@@ -176,7 +194,7 @@ goog.scope(function() {
              *  ```
              *
              */
-            $rootScope.$broadcast('tryton:ConcurrencyException', error[1]);
+            $rootScope.$broadcast('tryton:ConcurrencyException', error);
           } else {
             /**
              * @ngdoc event
